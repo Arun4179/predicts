@@ -546,7 +546,7 @@ const ServerStatus = ({ serverHealth }) => (
         <Activity className="h-5 w-5 text-emerald-400" />
         <div className="absolute inset-0 bg-emerald-400/20 rounded-full animate-ping"></div>
       </div>
-      <span className="text-sm text-slate-300 font-medium">Next.js: Ready</span>
+      <span className="text-sm text-slate-300 font-medium">react.js: Ready</span>
     </div>
     <div className="flex items-center space-x-3 bg-slate-800/60 px-6 py-3 rounded-full backdrop-blur-xl border border-slate-700/50">
       {serverHealth?.python_server?.status === 'healthy' ? (
@@ -812,7 +812,7 @@ export default function Home() {
             </h1>
           </div>
           <p className="text-slate-300 text-xl max-w-3xl mx-auto leading-relaxed">
-            Advanced AI-powered analysis for medical images including wounds, burns, and brain scans
+            Advanced AI-powered analysis for medical images including wounds, burns
           </p>
           
           <ServerStatus serverHealth={serverHealth} />
