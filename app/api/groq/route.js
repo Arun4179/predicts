@@ -5,6 +5,14 @@ export async function POST(req) {
     try {
         const { diseaseName, confidence } = await req.json();
 
+        if (!process.env.GROQ_API_KEY) {
+            console.error('GROQ_API_KEY is not defined in environment variables');
+            return NextResponse.json(
+                { error: 'GROQ_API_KEY is missing in environment variables. Please configure it in your Vercel Project Settings or .env file.' },
+                { status: 500 }
+            );
+        }
+
         const groq = new Groq({
             apiKey: process.env.GROQ_API_KEY,
         });
@@ -53,12 +61,14 @@ Please format your response using Markdown with the following guidelines:
 Ensure the response is informative yet easy to understand for patients, structured for readability, and visually engaging.
 `;
 
+        const model = process.env.GROQ_MODEL || "openai/gpt-oss-120b";
+
         const chatCompletion = await groq.chat.completions.create({
             messages: [{
                 role: "user",
                 content: prompt,
             }, ],
-            model: "meta-llama/llama-4-scout-17b-16e-instruct",
+            model: model,
             temperature: 0.7,
             max_tokens: 2048,
             top_p: 1.0,

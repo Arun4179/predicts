@@ -26,7 +26,14 @@ const GroqAPI = ({ diseaseName, confidence }) => {
       });
 
       if (!response.ok) {
-        throw new Error(`API request failed: ${response.status}`);
+        let errorMsg = `API request failed: ${response.status}`;
+        try {
+          const errData = await response.json();
+          if (errData?.details || errData?.error) {
+            errorMsg = errData.details || errData.error;
+          }
+        } catch (_) {}
+        throw new Error(errorMsg);
       }
 
       const reader = response.body.getReader();
@@ -41,7 +48,7 @@ const GroqAPI = ({ diseaseName, confidence }) => {
       }
     } catch (error) {
       console.error("Error generating medical advice:", error);
-      setError("Failed to generate medical advice. Please try again.");
+      setError(error.message || "Failed to generate medical advice. Please try again.");
     } finally {
       setLoading(false);
     }
